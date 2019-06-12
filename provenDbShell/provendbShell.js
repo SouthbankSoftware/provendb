@@ -270,7 +270,7 @@ provendbShell.init = (pdb) => {
     };
 
     // List most recent proofs
-    pdb.listLastProofs = (limit) => {
+    pdb.listProofs = (limit) => {
         if (!limit) {
             limit = 1;
         }
