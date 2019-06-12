@@ -311,29 +311,36 @@ provendbShell.init = (pdb) => {
         let endDate = new Date();
         let startDate = new Date(new Date() - (10 * 365 * 24 * 3600 * 1000));
         const output = [];
+        let listVersionsDoc = {};
         if (args.length > 5) {
             return usage;
         }
-        if (args.length > 3) {
-            sortDirection = args[3];
-        }
-        if (args.length > 2) {
-            limit = args[2];
-        }
-        if (args.length > 1) {
-            endDate = args[1];
-        }
-        if (args.length > 0) {
-            startDate = args[0];
-        }
-
-        return (db.runCommand({
-            listVersions: {
+        if (args.length === 1 && typeof args[0] === 'number') {
+            listVersionsDoc = {
+                limit: args[0]
+            };
+        } else {
+            if (args.length > 3) {
+                sortDirection = args[3];
+            }
+            if (args.length > 2) {
+                limit = args[2];
+            }
+            if (args.length > 1) {
+                endDate = args[1];
+            }
+            if (args.length > 0) {
+                startDate = args[0];
+            }
+            listVersionsDoc = {
                 startDate,
                 endDate,
                 limit,
                 sortDirection
-            }
+            };
+        }
+        return (db.runCommand({
+            listVersions: listVersionsDoc
         }));
     };
 
@@ -464,7 +471,7 @@ provendbShell.init = (pdb) => {
         if (args.length > 0) {
             if (typeof args[0] === 'number') { // We have been supplied with a version, not a proofId
                 proofId = pdb.bestProofForVersion(args[0]);
-                if (proofId === null) return null;
+                if (proofId === null) return 'No proof exists';
             } else { // First argument is a proof id
                 proofId = args[0];
             }
