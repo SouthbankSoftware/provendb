@@ -20,7 +20,6 @@
 #
 */
 
-
 /* eslint no-var: 0 */
 /* eslint no-unused-vars: 0 */
 
@@ -33,6 +32,7 @@
 /* eslint no-plusplus: 0 */
 
 var provendbShell = {};
+
 
 provendbShell.init = (pdb) => {
     // Get bulk load status
@@ -490,7 +490,7 @@ provendbShell.init = (pdb) => {
         if (proofs.length === 0) {
             return null;
         }
-            return proofs[0].proofId;
+        return proofs[0].proofId;
     };
 
     pdb.pdbVersion = () => {

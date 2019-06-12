@@ -41,6 +41,11 @@ else
   fi
 fi
 
+if [ "$PROVENDB_SHELL_JS" = "" ];then
+  echo "Error: Cannot file $PDBJS in path"
+  exit 1
+fi
+
 WHICHMONGO=`which mongo`; 
 if [ "$WHICHMONGO" = "" ];then
   echo "Can't find mongo shell in path: Please install mongo client"
