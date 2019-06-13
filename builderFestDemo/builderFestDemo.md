@@ -9,17 +9,19 @@
     * On Unix/Linux:
 
         `export BID=NN # Where NN is your builder ID (01, 02, ...)`
-        `export PROVENDB_DB=tst_f${BID}`
-        `export PROVENDB_URI=mongodb://fest:fest@provendb_tst_f{BID}.provendb.io/tst_f${BID}?ssl=true`
+        `export PDB_DB=tst_f$BID`
+        `export PDB_URI=mongodb://fest:fest@provendb_tst_f$BID.provendb.io/$PDB_DB?ssl=true`
         
     * On Windows
-        TBD
+        `set BID=NN # Where NN is your builder ID (01, 02, ...)`
+        `set PDB_DB=tst_f%BID%`
+        `set PDB_URI=mongodb://fest:fest@provendb_tst_f%BID%.provendb.io/%PDB_DB%?ssl=true`
 
-4. Connect to your service:
+5. Connect to your service:
     *   On Windows
-            ```provendbShell %PROVENDB_URI%```
+            ```provendbShell %PDB_URI%```
     *   On Mac/Linux:   
-            ```provendbShell.sh $PROVENDB_URI```
+            ```provendbShell.sh $PDB_URI```
 
 ## Exploring ProvenDB
 
@@ -208,7 +210,7 @@ ProvenDB v4 (history)> db.verifyProof(4)
 Lets use mongofiles to load something into the database:
 
 ```Shell
-$ mongofiles --sslAllowInvalidCertificates  --uri=$PROVENDB_URI --db=$PROVENDB_DB  put provendbShell.js
+$ mongofiles --sslAllowInvalidCertificates  --uri=$PDB_URI --db=$PDB_DB  put provendbShell.js
 2019-06-13T09:19:56.880+1000    connected to: localhost
 2019-06-13T09:19:56.881+1000    added file: provendbShell.js
 ```
@@ -216,7 +218,7 @@ $ mongofiles --sslAllowInvalidCertificates  --uri=$PROVENDB_URI --db=$PROVENDB_D
 
 Connect to your service:
 ```Shell
-$ ./provendbShell.sh $PROVENDB_URI
+$ ./provendbShell.sh $PDB_URI
 ProvenDB shell helper
 type "help" for help
 ```
