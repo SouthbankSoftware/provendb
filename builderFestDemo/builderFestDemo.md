@@ -8,9 +8,10 @@
 4. Set an environment variable for your URI
     * On Unix/Linux:
 
-        export SI=
-        export PROVENDB_URI=mongodb://bfest:bfest@provendb_tst_bfest${SI}.provendb.io/tst_bfest${SI}?ssl=true
-        export PROVENDB_DB=tst_bfest${SI}
+        `export BID=NN # Where NN is your builder ID (01, 02, ...)`
+        `export PROVENDB_DB=tst_f${BID}`
+        `export PROVENDB_URI=mongodb://fest:fest@provendb_tst_f{BID}.provendb.io/tst_f${BID}?ssl=true`
+        
     * On Windows
         TBD
 
