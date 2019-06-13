@@ -7,21 +7,19 @@
 3. Unpack shell helpers and copy files into your path
 4. Set an environment variable for your URI
     * On Unix/Linux:
-
-        `export BID=NN # Where NN is your builder ID (01, 02, ...)`
-
-        `export PDB_DB=tst_f$BID`
-
-        `export PDB_URI=mongodb://fest:fest@provendb_tst_f$BID.provendb.io/$PDB_DB?ssl=true`
-
+        ```bash
+        export BID=NN # Where NN is your builder ID (01, 02, ...)
+        export PDB_DB=tst_f$BID
+        export PDB_URI=mongodb://fest:fest@provendb_tst_f$BID.provendb.io/$PDB_DB?ssl=true
+        ```
         
     * On Windows
-        `set BID=NN # Where NN is your builder ID (01, 02, ...)`
+        ```batch
+        set BID=NN # Where NN is your builder ID (01, 02, ...)`
+        set PDB_DB=tst_f%BID%
+        set PDB_URI=mongodb://fest:fest@provendb_tst_f%BID%.provendb.io/%PDB_DB%?ssl=true
+        ```
 
-        `set PDB_DB=tst_f%BID%`
-
-        `set PDB_URI=mongodb://fest:fest@provendb_tst_f%BID%.provendb.io/%PDB_DB%?ssl=true`
-        
 
 5. Connect to your service:
     *   On Windows
