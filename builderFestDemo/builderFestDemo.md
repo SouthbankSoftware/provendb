@@ -30,6 +30,8 @@
             ```provendbShell %PDB_URI%```
     *   On Mac/Linux:   
             ```provendbShell.sh $PDB_URI```
+            OR
+            ```./provendbShell.sh $PDB_URI```            
 
 ## Exploring ProvenDB
 
@@ -217,19 +219,36 @@ ProvenDB v4 (history)> db.verifyProof(4)
 
 Lets use mongofiles to load something into the database:
 
-```Shell
+In Mac or Linux:
+
+```
 $ mongofiles --sslAllowInvalidCertificates  --uri=$PDB_URI --db=$PDB_DB  put provendbShell.js
 2019-06-13T09:19:56.880+1000    connected to: localhost
 2019-06-13T09:19:56.881+1000    added file: provendbShell.js
 ```
+On Windows:
+
+```
+C:\Users\guy\Downloads>mongofiles --sslAllowInvalidCertificates  --uri=%PDB_URI% --db=%PDB_DB%  put provendbShell.js
+2019-06-14T13:39:33.315+1000    connected to: localhost
+2019-06-14T13:39:33.316+1000    added file: provendbShell.js
+```
+
 (Use --sslAllowInvalidCertificates if you get an "error dialing" - its a mongofiles error)
 
 Connect to your service:
-```Shell
-$ ./provendbShell.sh $PDB_URI
-ProvenDB shell helper
-type "help" for help
-```
+
+    *   On Windows:
+    
+            ```provendbShell %PDB_URI%```
+            
+    *   On Mac/Linux:   
+    
+            ```provendbShell.sh $PDB_URI```
+            OR
+            ```./provendbShell.sh $PDB_URI```            
+
+
 See that the data is inserted: 
 
 ```javascript
