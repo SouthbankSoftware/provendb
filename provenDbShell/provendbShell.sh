@@ -49,8 +49,30 @@ fi
 WHICHMONGO=`which mongo`; 
 if [ "$WHICHMONGO" = "" ];then
   echo "Can't find mongo shell in path: Please install mongo client"
-else
-  echo ProvenDB shell helper
-  mongo $*  $PROVENDB_SHELL_JS --shell --quiet
+  exit 1
 fi
+
+#
+# Check mongoDB shell version
+#
+VERSTR=`mongo -version|grep 'shell version'`
+if [[ $VERSTR =~ version\ v([234]).([0-9]).* ]];then 
+  MAJOR_VERSION=${BASH_REMATCH[1]}
+  MINOR_VERSION=${BASH_REMATCH[2]}
+elif  [[ $VERSTR =~ version:\ ([234]).([0-9]).* ]];then 
+  MAJOR_VERSION=${BASH_REMATCH[1]}
+  MINOR_VERSION=${BASH_REMATCH[2]}
+else
+  echo "Cannot determine mongodb shell version"
+  exit 1
+fi
+
+if [ $MAJOR_VERSION -lt 4 -a $MINOR_VERSION -lt 6 ];then
+  echo "Require mongoDB shell 3.6 or above - you have ${MAJOR_VERSION}.${MINOR_VERSION}"
+  exit 1
+fi 
+
+echo ProvenDB shell helper
+mongo $*  $PROVENDB_SHELL_JS --shell --quiet
+
  
