@@ -15,13 +15,13 @@
 ```
         
     * On Windows
-        ```batch
+        ```bash
         REM Where NN is your builder ID (01, 02, ...)
         
         set BID=NN
         set PDB_DB=tst_f%BID%
         set PDB_URI=mongodb://fest:fest@provendb_tst_f%BID%.provendb.io/%PDB_DB%?ssl=true
-        ```
+```
 
 
 5. Connect to your service:
