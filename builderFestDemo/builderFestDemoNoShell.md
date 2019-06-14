@@ -38,15 +38,15 @@
 
 ## Exploring ProvenDB
 
-There is sample data installed which you can examine.  The following examples use the shell helper commands.  If you are connecting directly with the mongo shell see (here)[here]:
+There is sample data installed which you can examine.  The following examples use the mongo commands.  See [here](https://github.com/SouthbankSoftware/provendb/blob/master/builderFestDemo/builderFestDemo.md) for a version using the provendbShell. 
 
 Take a look at the accounts collection:
 
 ```javascript
-ProvenDB v12 (current)> db.accounts.find({},{transactions:0})
+> db.accounts.find({},{transactions:0})
 { "_id" : ObjectId("5d009971ccfe48e1d252fd5d"), "name" : "Guy", "balance" : 8500 }
 { "_id" : ObjectId("5d009971ccfe48e1d252fd5e"), "name" : "Mike", "balance" : 11500 }
-ProvenDB v12 (current)> db.accounts.find({name:'Guy'}).pretty()
+> db.accounts.find({name:'Guy'}).pretty()
 {
         "_id" : ObjectId("5d009971ccfe48e1d252fd5d"),
         "name" : "Guy",
@@ -75,7 +75,7 @@ ProvenDB v12 (current)> db.accounts.find({name:'Guy'}).pretty()
 ProvenDB is versioned database.  You can see the current version as follows:
 
 ```javascript
-ProvenDB v12 (current)> db.getVersion();
+> db.runCommand({getVersion:1})
 {
         "ok" : 1,
         "response" : "The version is set to: 'current'",
@@ -85,41 +85,42 @@ ProvenDB v12 (current)> db.getVersion();
 ```
 Lets look at the last few versions
 ```javascript
-ProvenDB v12 (current)> db.listVersions(3);
+> db.runCommand({listVersions:{limit:3}})
 {
-        "ok" : 1,
-        "versions" : [
-                {
-                        "version" : NumberLong(12),
-                        "status" : "Ended",
-                        "effectiveDate" : ISODate("2019-06-12T11:58:49Z")
-                },
-                {
-                        "version" : NumberLong(11),
-                        "status" : "Ended",
-                        "effectiveDate" : ISODate("2019-06-12T11:58:49Z")
-                },
-                {
-                        "version" : NumberLong(10),
-                        "status" : "Ended",
-                        "effectiveDate" : ISODate("2019-06-12T08:58:46Z")
-                }
-        ]
+	"ok" : 1,
+	"versions" : [
+		{
+			"version" : NumberLong(18),
+			"status" : "Ended",
+			"effectiveDate" : ISODate("2019-06-14T03:39:34Z")
+		},
+		{
+			"version" : NumberLong(17),
+			"status" : "Ended",
+			"effectiveDate" : ISODate("2019-06-14T03:39:34Z")
+		},
+		{
+			"version" : NumberLong(16),
+			"status" : "Ended",
+			"effectiveDate" : ISODate("2019-06-14T02:24:46Z")
+		}
+	]
 }
+
 ```
 Set the version to an older version 
 ```javascript
-ProvenDB v12 (current)> db.setVersion(4);
+> db.runCommand({setVersion:4})
 {
-        "ok" : 1,
-        "response" : "The version has been set to: '4'",
-        "version" : NumberLong(4),
-        "status" : "userDefined"
+	"ok" : 1,
+	"response" : "The version has been set to: '4'",
+	"version" : NumberLong(4),
+	"status" : "userDefined"
 }
 ```
 See database at this point
 ```javascript
-ProvenDB v4 (history)> db.accounts.findOne({name:'Guy'});
+> db.accounts.findOne({name:'Guy'});
 {
         "_id" : ObjectId("5d009971ccfe48e1d252fd5d"),
         "name" : "Guy",
@@ -136,7 +137,7 @@ ProvenDB v4 (history)> db.accounts.findOne({name:'Guy'});
 ```
  Try to change history 
  ```javascript
-ProvenDB v4 (history)> db.accounts.update({name:'Guy'},{balance:10000});
+> db.accounts.update({name:'Guy'},{balance:10000});
 WriteCommandError({
         "ok" : 0,
         "n" : 0,
@@ -152,69 +153,96 @@ WriteCommandError({
 ```
 See the blockchain proof for whole database 
 ```javascript
-ProvenDB v4 (history)> db.getProof(4);
+> db.runCommand({getProof:4,format:'binary'})
 {
-        "ok" : 1,
-        "proofs" : [
-                {
-                        "proofId" : "0bfc8b10-8cda-11e9-a57b-01ae91ab539e",
-                        "version" : NumberLong(4),
-                        "submitted" : ISODate("2019-06-12T06:19:34Z"),
-                        "hash" : "81043696bf38b57feb6a417328c12d5816085e7b3765523d01a1016b8ccdf39d",
-                        "scope" : "database",
-                        "status" : "Valid",
-                        "details" : {
-                                "protocol" : {
-                                        "name" : "chainpoint",
-                                        "uri" : "http://35.235.91.33",
-                                        "hashIdNode" : "0bfc8b10-8cda-11e9-a57b-01ae91ab539e",
-                                        "chainpointLocation" : "https://c.chainpoint.org/calendar/3364152/data"
-                                },
-                                "btcTxn" : "647e9cf991e1a2187d284f929707ad16ee8cfbb0c26a64410925007536c75546",
-                                "btcTxnReceived" : "2019-06-12T07:00:01.933Z",
-                                "btcTxnConfirmed" : "2019-06-12T07:09:08Z",
-                                "btcBlock" : "580353"
-                        },
-                        "proof" : BinData(0,"eJytVs1uZUcRhlfgGbKMx9V/1VVeWWKHWLLKxqrq6saWBtuyb0JYDmzYZs ... BQI9M9k=")
-                }
-        ]
-}
+	"ok" : 1,
+	"proofs" : [
+		{
+			"proofId" : "0bfc8b10-8cda-11e9-a57b-01ae91ab539e",
+			"version" : NumberLong(4),
+			"submitted" : ISODate("2019-06-12T06:19:34Z"),
+			"hash" : "81043696bf38b57feb6a417328c12d5816085e7b3765523d01a1016b8ccdf39d",
+			"scope" : "database",
+			"status" : "Valid",
+			"details" : {
+				"protocol" : {
+					"name" : "chainpoint",
+					"uri" : "http://35.235.91.33",
+					"hashIdNode" : "0bfc8b10-8cda-11e9-a57b-01ae91ab539e",
+					"chainpointLocation" : "https://c.chainpoint.org/calendar/3364152/data"
+				},
+				"btcTxn" : "647e9cf991e1a2187d284f929707ad16ee8cfbb0c26a64410925007536c75546",
+				"btcTxnReceived" : "2019-06-12T07:00:01.933Z",
+				"btcTxnConfirmed" : "2019-06-12T07:09:08Z",
+				"btcBlock" : "580353"
+			},
+			"proof" : BinData(0,"eJytVs1uZUcRhlfgGbKM .... 0sqPWlZqavk0bGf/BQI9M9k=")
+		}
+
 ```
 Get a  proof for a single document
 ```javascript
-ProvenDB v4 (history)> db.getDocumentProof('accounts',{name:'Guy'},4);
+> db.runCommand({getDocumentProof:{collection:'accounts',filter:{name:'Guy'},version:4,format:'binary'}})
 {
-        "ok" : 1,
-        "proofs" : [
-                {
-                        "collection" : "accounts",
-                        "version" : NumberLong(4),
-                        "provenDbId" : ObjectId("5d009971ccfe48e1d252fd5d"),
-                        "documentId" : ObjectId("5d009971ccfe48e1d252fd5d"),
-                        "versionProofId" : "0bfc8b10-8cda-11e9-a57b-01ae91ab539e",
-                        "status" : "Valid",
-                        "btcTransaction" : "647e9cf991e1a2187d284f929707ad16ee8cfbb0c26a64410925007536c75546",
-                        "btcBlockNumber" : "580353",
-                        "documentHash" : "5877270c9049226f5787b94e61d6617154cb5cea73106b2ac22b0915427f04a2",
-                        "versionHash" : "81043696bf38b57feb6a417328c12d5816085e7b3765523d01a1016b8ccdf39d",
-                        "proof" : BinData(0,"eJysV8+u...E/8dAAD//xE9WD4=")
-                }
-        ]
+	"ok" : 1,
+	"proofs" : [
+		{
+			"collection" : "accounts",
+			"version" : NumberLong(4),
+			"provenDbId" : ObjectId("5d009971ccfe48e1d252fd5d"),
+			"documentId" : ObjectId("5d009971ccfe48e1d252fd5d"),
+			"versionProofId" : "0bfc8b10-8cda-11e9-a57b-01ae91ab539e",
+			"status" : "Valid",
+			"btcTransaction" : "647e9cf991e1a2187d284f929707ad16ee8cfbb0c26a64410925007536c75546",
+			"btcBlockNumber" : "580353",
+			"documentHash" : "5877270c9049226f5787b94e61d6617154cb5cea73106b2ac22b0915427f04a2",
+			"versionHash" : "81043696bf38b57feb6a417328c12d5816085e7b3765523d01a1016b8ccdf39d",
+			"proof" : BinData(0,"eJysV8+u3slRhVfgGbIcj6u6urqq7soS...2j/+DH/NEx9+9IdME/8dAAD//xE9WD4=")
+		}
+	]
 }
+>
 ```
 Verify the proof agains the blockchain:
 ```javascript
-ProvenDB v4 (history)> db.verifyProof(4)
+> db.runCommand({getProof:4,format:'binary'})
 {
-        "ok" : 1,
-        "version" : NumberLong(4),
-        "dateTime" : ISODate("2019-06-12T23:08:27.263Z"),
-        "hash" : "81043696bf38b57feb6a417328c12d5816085e7b3765523d01a1016b8ccdf39d",
-        "proofId" : "0bfc8b10-8cda-11e9-a57b-01ae91ab539e",
-        "proofStatus" : "Valid",
-        "btcTransaction" : "647e9cf991e1a2187d284f929707ad16ee8cfbb0c26a64410925007536c75546",
-        "btcBlockNumber" : "580353",
-        "proof" : BinData(0,"eJytVs1uZUcRhlfgGbKMx9V/1VVeWWKHWLLKxqrq6saWBtuyb0JYDmzYZsEDhAxMiLJBQizzHo54GL5zbcaJ70VKpBxLlnV8urqqvp+qP395Pm6ud/PT3TeXu93t/dnp6e/LVby6ufvt6bi0q+vbm6vr3ekn5 ... cIeJtv2iFai1ICVjCqTM9ZGF+i6zwxnikkuguUZRsc14duXMV9uK1gonreVvzeh0sqPWlZqavk0bGf/BQI9M9k=")
+	"ok" : 1,
+	"proofs" : [
+		{
+			"proofId" : "0bfc8b10-8cda-11e9-a57b-01ae91ab539e",
+			"version" : NumberLong(4),
+			"submitted" : ISODate("2019-06-12T06:19:34Z"),
+			"hash" : "81043696bf38b57feb6a417328c12d5816085e7b3765523d01a1016b8ccdf39d",
+			"scope" : "database",
+			"status" : "Valid",
+			"details" : {
+				"protocol" : {
+					"name" : "chainpoint",
+					"uri" : "http://35.235.91.33",
+					"hashIdNode" : "0bfc8b10-8cda-11e9-a57b-01ae91ab539e",
+					"chainpointLocation" : "https://c.chainpoint.org/calendar/3364152/data"
+				},
+				"btcTxn" : "647e9cf991e1a2187d284f929707ad16ee8cfbb0c26a64410925007536c75546",
+				"btcTxnReceived" : "2019-06-12T07:00:01.933Z",
+				"btcTxnConfirmed" : "2019-06-12T07:09:08Z",
+				"btcBlock" : "580353"
+			},
+			"proof" : BinData(0,"eJytVs1uZUcRhlfgGb ... PWlZqavk0bGf/BQI9M9k=")
+		}
+	]
+}
+> db.runCommand({verifyProof:"0bfc8b10-8cda-11e9-a57b-01ae91ab539e",format:'binary'})
+{
+	"ok" : 1,
+	"version" : NumberLong(4),
+	"dateTime" : ISODate("2019-06-14T04:16:52.829Z"),
+	"hash" : "81043696bf38b57feb6a417328c12d5816085e7b3765523d01a1016b8ccdf39d",
+	"proofId" : "0bfc8b10-8cda-11e9-a57b-01ae91ab539e",
+	"proofStatus" : "Valid",
+	"btcTransaction" : "647e9cf991e1a2187d284f929707ad16ee8cfbb0c26a64410925007536c75546",
+	"btcBlockNumber" : "580353",
+	"proof" : BinData(0,"eJytVs1uZUcRhlfgGbKMx9V/...PWlZqavk0bGf/BQI9M9k=")
 }
 ```
 
@@ -263,20 +291,27 @@ OR
 See that the data is inserted: 
 
 ```javascript
-ProvenDB v14 (current)>  db.fs.files.find({},{filename:1})
+>  db.fs.files.find({},{filename:1})
 { "_id" : ObjectId("5d01889c038db4dfe9037037"), "filename" : "provendbShell.js" }
 ```
 Submit a proof - your file is now on the blockchain!
 
 ```javascript
-ProvenDB v14 (current)> db.submitProof()
+> db.runCommand({setVersion:'current'})
 {
-        "ok" : 1,
-        "version" : NumberLong(14),
-        "dateTime" : ISODate("2019-06-12T23:21:47Z"),
-        "hash" : "b44868672c89c27f47adc66c8d4b4887417dd48c9f103b7082dd885288eccea8",
-        "proofId" : "d9a3d9e0-8d68-11e9-a57b-0156b05d861f",
-        "status" : "Pending"
+	"ok" : 1,
+	"response" : "The version has been set to: 'current'",
+	"version" : NumberLong(18),
+	"status" : "current"
+}
+> db.runCommand({submitProof:18})
+{
+	"ok" : 1,
+	"version" : NumberLong(18),
+	"dateTime" : ISODate("2019-06-14T04:18:29Z"),
+	"hash" : "d4b0b30d7674b27811a0d66185e7069fa06dca7779d9ba11b934ffc4a92f54ed",
+	"proofId" : "7664dac0-8e5b-11e9-a57b-0141c9984a62",
+	"status" : "Pending"
 }
 ```
 

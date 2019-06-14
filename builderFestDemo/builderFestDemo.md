@@ -38,7 +38,7 @@
 
 ## Exploring ProvenDB
 
-There is sample data installed which you can examine.  The following examples use the shell helper commands.  If you are connecting directly with the mongo shell see (here)[here]:
+There is sample data installed which you can examine.  The following examples use the shell helper commands.  If you are connecting directly with the mongo shell see [here](https://github.com/SouthbankSoftware/provendb/blob/master/builderFestDemo/builderFestDemoNoShell.md):
 
 Take a look at the accounts collection:
 
