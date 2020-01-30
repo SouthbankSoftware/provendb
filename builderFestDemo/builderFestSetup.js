@@ -8,7 +8,7 @@ db.accounts.insertMany([
   { name: 'Mike', balance: 10000, transactions: [] }
 ]);
 
-var delay=0;
+var delay=1000*500;
 var oneDay=1000*3600*24;
 var edate=new Date();
 db.accounts.update({name:'Guy'},{$set:{balance:5000},$push:{transactions:{timestamp:edate,to:'Mike',amount:5000,comment:'loan'}}},{multi:true});

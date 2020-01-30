@@ -1,3 +1,4 @@
+#!/bin/bash
 /*
 # provendbShell - wrapper around mongo shell for Provendb
 
@@ -199,6 +200,21 @@ provendbShell.init = (pdb) => {
         }
         return pdb.runCommand(getProofArgs);
     };
+
+    pdb.proofStatus = () =>{
+        const output = {};
+        db.getCollection('_provendb_versionProofs')
+          .find({}, {})
+          .forEach((p) => {
+            // print(p.status);
+            if (!(p.status in output)) {
+              output[p.status] = 1;
+            } else {
+              output[p.status] += 1;
+            }
+          });
+        return output;
+    }
 
     // Get a proof for a particular verison
     pdb.getProofForVersion = (versionId) => {
