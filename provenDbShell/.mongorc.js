@@ -33,6 +33,13 @@
  * THE SOFTWARE.
  */
 // Easy flag for disabling for native shell.
+
+//Otherwise we get uuidToString() errors 
+function uuidToString(uuid, uuidType) {
+
+  return uuid;
+}
+
 mongo_hacker_config = {
   verbose_shell: true, // additional verbosity
   index_paranoia: false, // querytime explain
